@@ -28,9 +28,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ToadicusTools
+namespace ToadicusTools.Extensions
 {
-	public static partial class Tools
+	public static class VesselExtensions
 	{
 		/// <summary>
 		/// Returns the distance between this Vessel and another Vessel.
@@ -83,63 +83,6 @@ namespace ToadicusTools
 		}
 
 		/// <summary>
-		/// Returns true if no CelestialBody occludes the target point from this Vessel, false otherwise.
-		/// Includes a 5% "fudge factor".
-		/// </summary>
-		/// <returns><c>true</c>, if this Vessel has line of sight to the target Vessel, <c>false</c> otherwise.</returns>
-		/// <param name="vessel">this Vessel</param>
-		/// <param name="distantPoint">target point</param>
-		/// <param name="firstOccludingBody">Set to the first body found to be blocking line of sight,
-		/// if any, otherwise null.</param>
-		/// <param name="excludedBody">CelestialBody to exclude from the LOS check</param>
-		/// <param name="sqrRatio">The square of the "grace" ratio to apply
-		/// to the radius of potentially excluding bodies.</param>
-		[Obsolete("This overload has no calls; it may be removed in the future", false)]
-		public static bool hasLineOfSightTo(
-			this Vessel vessel,
-			Vector3d distantPoint,
-			out CelestialBody firstOccludingBody,
-			CelestialBody excludedBody,
-			double sqrRatio = 1d
-		)
-		{
-			return VectorTools.IsLineOfSightBetween(
-				vessel.GetWorldPos3D(),
-				distantPoint,
-				out firstOccludingBody,
-				excludedBody,
-				sqrRatio
-			);
-		}
-
-		/// <summary>
-		/// Returns true if no CelestialBody occludes the target point from this Vessel, false otherwise.
-		/// Includes a 5% "fudge factor".
-		/// </summary>
-		/// <returns><c>true</c>, if this Vessel has line of sight to the target Vessel, <c>false</c> otherwise.</returns>
-		/// <param name="vessel">this Vessel</param>
-		/// <param name="distantPoint">target point</param>
-		/// <param name="firstOccludingBody">Set to the first body found to be blocking line of sight,
-		/// if any, otherwise null.</param>
-		/// <param name="sqrRatio">The square of the "grace" ratio to apply
-		/// to the radius of potentially excluding bodies.</param>
-		[Obsolete("This overload has no calls; it may be removed in the future", false)]
-		public static bool hasLineOfSightTo(
-			this Vessel vessel,
-			Vector3d distantPoint,
-			out CelestialBody firstOccludingBody,
-			double sqrRatio = 1d
-		)
-		{
-			return VectorTools.IsLineOfSightBetween(
-				vessel.GetWorldPos3D(),
-				distantPoint,
-				out firstOccludingBody,
-				sqrRatio
-			);
-		}
-
-		/// <summary>
 		/// Returns true if no CelestialBody occludes the target Vessel from this Vessel, false otherwise.
 		/// </summary>
 		/// <returns><c>true</c>, if this Vessel has line of sight to the target Vessel,
@@ -166,30 +109,6 @@ namespace ToadicusTools
 		}
 
 		/// <summary>
-		/// Returns true if no CelestialBody occludes the target Vessel from this Vessel, false otherwise.
-		/// </summary>
-		/// <returns><c>true</c>, if this Vessel has line of sight to the target Vessel, <c>false</c> otherwise.</returns>
-		/// <param name="vessel">this Vessel</param>
-		/// <param name="targetVessel">target Vessel</param>
-		/// <param name="sqrRatio">The square of the "grace" ratio to apply
-		/// to the radius of potentially excluding bodies.</param>
-		[Obsolete("This overload has no calls; it may be removed in the future", false)]
-		public static bool hasLineOfSightTo(
-			this Vessel vessel,
-			Vessel targetVessel,
-			double sqrRatio = 1d
-		)
-		{
-			CelestialBody _;
-			return VectorTools.IsLineOfSightBetween(
-				vessel.GetWorldPos3D(),
-				targetVessel.GetWorldPos3D(),
-				out _,
-				sqrRatio
-			);
-		}
-
-		/// <summary>
 		/// Returns true if no CelestialBody occludes the target CelestialBody from this Vessel, false otherwise.
 		/// </summary>
 		/// <returns><c>true</c>, if this Vessel has line of sight to the target Vessel, <c>false</c> otherwise.</returns>
@@ -213,95 +132,6 @@ namespace ToadicusTools
 				targetBody,
 				sqrRatio
 			);
-		}
-
-		/// <summary>
-		/// Returns true if no CelestialBody occludes the target CelestialBody from this Vessel, false otherwise.
-		/// </summary>
-		/// <returns><c>true</c>, if this Vessel has line of sight to the target Vessel, <c>false</c> otherwise.</returns>
-		/// <param name="vessel">this Vessel</param>
-		/// <param name="targetBody">target CelestialBody</param>
-		/// <param name="sqrRatio">The square of the "grace" ratio to apply
-		/// to the radius of potentially excluding bodies.</param>
-		[Obsolete("This overload has no calls; it may be removed in the future", false)]
-		public static bool hasLineOfSightTo(
-			this Vessel vessel,
-			CelestialBody targetBody,
-			double sqrRatio = 1d
-		)
-		{
-			CelestialBody _;
-
-			return VectorTools.IsLineOfSightBetween(
-				vessel.GetWorldPos3D(),
-				targetBody.position,
-				out _,
-				targetBody,
-				sqrRatio
-			);
-		}
-
-		/// <summary>
-		/// Returns true if no CelestialBody occludes the target point from this Vessel, false otherwise.
-		/// Includes a 5% "fudge factor".
-		/// </summary>
-		/// <returns><c>true</c>, if this Vessel has line of sight to the target Vessel, <c>false</c> otherwise.</returns>
-		/// <param name="vessel">this Vessel</param>
-		/// <param name="distantPoint">target point</param>
-		/// <param name="firstOccludingBody">Set to the first body found to be blocking line of sight,
-		/// if any, otherwise null.</param>
-		/// <param name="excludedBody">Array of CelestialBodies to exclude from the LOS check</param>
-		/// <param name="sqrRatio">The square of the "grace" ratio to apply
-		/// to the radius of potentially excluding bodies.</param>
-		[Obsolete("Call to obsolete hasLineOfSightTo overload with CelestialBody[] excludedBodies.", true)]
-		public static bool hasLineOfSightTo(
-			this Vessel vessel,
-			Vector3d distantPoint,
-			out CelestialBody firstOccludingBody,
-			CelestialBody[] excludedBodies = null,
-			double sqrRatio = 1d
-		)
-		{
-			CelestialBody body;
-
-			if (excludedBodies != null && excludedBodies.Length > 0)
-			{
-				body = excludedBodies[0];
-			}
-			else
-			{
-				body = null;
-			}
-
-			return VectorTools.IsLineOfSightBetween(
-				vessel.GetWorldPos3D(),
-				distantPoint,
-				out firstOccludingBody,
-				body,
-				sqrRatio
-			);
-		}
-
-		/// <summary>
-		/// Returns true if no CelestialBody occludes the target point from this Vessel, false otherwise.
-		/// Includes a 5% "fudge factor".
-		/// </summary>
-		/// <returns><c>true</c>, if this Vessel has line of sight to the target Vessel, <c>false</c> otherwise.</returns>
-		/// <param name="vessel">this Vessel</param>
-		/// <param name="distantPoint">target point</param>
-		/// <param name="excludedBody">Array of CelestialBodies to exclude from the LOS check</param>
-		/// <param name="sqrRatio">The square of the "grace" ratio to apply
-		/// to the radius of potentially excluding bodies.</param>
-		[Obsolete("Call to obsolete hasLineOfSightTo overload with CelestialBody[] excludedBodies.", true)]
-		public static bool hasLineOfSightTo(
-			this Vessel vessel,
-			Vector3d distantPoint,
-			CelestialBody[] excludedBodies = null,
-			double sqrRatio = 1d
-		)
-		{
-			CelestialBody _;
-			return hasLineOfSightTo(vessel, distantPoint, out _, excludedBodies, sqrRatio);
 		}
 
 		/// <summary>
@@ -319,6 +149,39 @@ namespace ToadicusTools
 			return (vessel.CurrentCommand() & VesselCommand.Probe) == VesselCommand.Probe;
 		}
 
+		public static uint PartCrewCount(this Part part)
+		{
+			return part.PartCrewCount(false);
+		}
+
+		public static uint PartCrewCount(this Part part, bool countTourists)
+		{
+			if (part == null)
+			{
+				throw new ArgumentNullException("part.PartCrewCount: part must not be null");
+			}
+
+			if (part.protoModuleCrew == null)
+			{
+				return 0u;
+			}
+
+			uint count = 0u;
+			ProtoCrewMember member;
+
+			for (int idx = 0; idx < part.protoModuleCrew.Count; idx++)
+			{
+				member = part.protoModuleCrew[idx];
+
+				if (countTourists || member.type != ProtoCrewMember.KerbalType.Tourist)
+				{
+					count++;
+				}
+			}
+
+			return count;
+		}
+
 		public static VesselCommand CurrentCommand(this Vessel vessel)
 		{
 			VesselCommand currentCommand = VesselCommand.None;
@@ -332,11 +195,7 @@ namespace ToadicusTools
 				{
 					ModuleCommand commandModule = module as ModuleCommand;
 
-					if (
-						commandModule.part != null &&
-						commandModule.part.protoModuleCrew != null &&
-						commandModule.part.protoModuleCrew.Count >= commandModule.minimumCrew
-					)
+					if (commandModule.part.PartCrewCount() >= commandModule.minimumCrew)
 					{
 						if (
 							commandModule.minimumCrew > 0 ||
@@ -482,12 +341,5 @@ namespace ToadicusTools
 
 			return vessel.tryGetFirstModuleOfType(out _);
 		}
-	}
-
-	public enum VesselCommand
-	{
-		None = 0,
-		Probe = 1,
-		Crew = 2
 	}
 }

@@ -1,4 +1,4 @@
-﻿// ToadicusTools, a TweakableEverything module
+﻿// TweakableEverything
 //
 // TweakableTools.cs
 //
@@ -24,10 +24,6 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 using KSP;
-using KSP.IO;
-#if USE_KSPAPIEXTENSIONS
-using KSPAPIExtensions;
-#endif
 using System;
 using System.Collections.Generic;
 using ToadicusTools;
@@ -50,7 +46,7 @@ namespace TweakableEverything
 		{
 			if (floatTweakable == null)
 			{
-				Tools.PostErrorMessage("Got null Control during InitializeTweakable for type {0}; bailing out.",
+				Logging.PostErrorMessage("Got null Control during InitializeTweakable for type {0}; bailing out.",
 					typeof(T).FullName);
 
 				return;
@@ -88,17 +84,6 @@ namespace TweakableEverything
 			stepIncrement = Mathf.Pow(10f, Mathf.RoundToInt(Mathf.Log10(Mathf.Abs(centerValue))) - 1);
 			stepIncrement *= stepMult;
 
-			#if USE_KSPAPIEXTENSIONS
-			if (floatTweakable is UI_FloatEdit)
-			{
-				UI_FloatEdit floatEdit = floatTweakable as UI_FloatEdit;
-
-				floatEdit.maxValue = maxValue;
-				floatEdit.minValue = minValue;
-				floatEdit.incrementSlide = stepIncrement;
-			}
-			else
-			#endif
 			if (floatTweakable is UI_FloatRange)
 			{
 				UI_FloatRange floatRange = floatTweakable as UI_FloatRange;
@@ -109,17 +94,12 @@ namespace TweakableEverything
 			}
 			else
 			{
-				Tools.PostErrorMessage("InitializeTweakable<{0}>: Got floatTweakable of type {1}, expected {2}"
-						#if USE_KSPAPIEXTENSIONS
-						+ " or {3}"
-						#endif
-						, typeof(T).FullName,
-						floatTweakable.GetType().FullName,
-						typeof(UI_FloatRange).FullName
-						#if USE_KSPAPIEXTENSIONS
-						, typeof(UI_FloatEdit).FullName
-						#endif
-					);
+				Logging.PostErrorMessage(
+					"InitializeTweakable<{0}>: Got floatTweakable of type {1}, expected {2}",
+					typeof(T).FullName,
+					floatTweakable.GetType().FullName,
+					typeof(UI_FloatRange).FullName
+				);
 
 				return;
 			}
@@ -191,7 +171,7 @@ namespace TweakableEverything
 
 			try
 			{
-				PluginConfiguration config = PluginConfiguration.CreateForType<T>();
+				KSP.IO.PluginConfiguration config = KSP.IO.PluginConfiguration.CreateForType<T>();
 
 				config.load();
 
@@ -201,15 +181,13 @@ namespace TweakableEverything
 			}
 			catch (Exception e)
 			{
-				Tools.PostErrorMessage(
+				Logging.PostErrorMessage(
 					"{0} handled while loading PluginData for type {1}: do you have a malformed XML file?",
 					e.GetType().FullName,
 					typeof(T).Name
 				);
 
-				#if DEBUG
-				Tools.PostDebugMessage(e.ToString());
-				#endif
+				Logging.PostDebugMessage(e.ToString());
 			}
 
 			return bounds;
@@ -223,7 +201,7 @@ namespace TweakableEverything
 
 			try
 			{
-				PluginConfiguration config = PluginConfiguration.CreateForType<T>();
+				KSP.IO.PluginConfiguration config = KSP.IO.PluginConfiguration.CreateForType<T>();
 
 				config.load();
 
@@ -233,15 +211,13 @@ namespace TweakableEverything
 			}
 			catch (Exception e)
 			{
-				Tools.PostErrorMessage(
+				Logging.PostErrorMessage(
 					"{0} handled while loading PluginData for type {1}: do you have a malformed XML file?",
 					e.GetType().FullName,
 					typeof(T).Name
 				);
 
-				#if DEBUG
-				Tools.PostDebugMessage(e.ToString());
-				#endif
+				Logging.PostDebugMessage(e.ToString());
 			}
 
 			return (float)stepMult;

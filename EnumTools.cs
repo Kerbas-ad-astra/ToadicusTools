@@ -1,6 +1,6 @@
 ﻿// ToadicusTools
 //
-// Enums.cs
+// EnumTools.cs
 //
 // Copyright © 2015, toadicus
 // All rights reserved.
@@ -22,36 +22,37 @@
 // SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 using System;
 
 namespace ToadicusTools
 {
-	public enum LogChannel
+	public static class EnumTools
 	{
-		Log,
-		Warning,
-		Error
-	}
-
-	public enum PlayPosition
-	{
-		Beginning = 0,
-		End = 1
-	}
-
-	public enum PlayDirection
-	{
-		Forward = 1,
-		Backward = -1
-	}
-
-	namespace Extensions
-	{
-		public enum VesselCommand
+		public static bool TryParse<enumType>(string value, out enumType result)
+			where enumType : struct, IConvertible, IComparable, IFormattable
 		{
-			None = 0,
-			Probe = 1,
-			Crew = 2
+			try
+			{
+				if (!typeof(enumType).IsEnum)
+				{
+					throw new ArgumentException("result must be of an enum type");
+				}
+
+				result = (enumType)Enum.Parse(typeof(enumType), value);
+				return true;
+			}
+			catch (Exception e)
+			{
+				Logging.PostWarningMessage("[{0}] failed to parse value '{1}': {2}",
+					typeof(enumType).Name,
+					value,
+					e.Message
+				);
+
+				result = (enumType)Enum.GetValues(typeof(enumType)).GetValue(0);
+				return false;
+			}
 		}
 	}
 }

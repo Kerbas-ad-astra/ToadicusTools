@@ -1,6 +1,6 @@
 ﻿// ToadicusTools
 //
-// Enums.cs
+// StopwatchExtensions.cs
 //
 // Copyright © 2015, toadicus
 // All rights reserved.
@@ -24,34 +24,14 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 
-namespace ToadicusTools
+namespace ToadicusTools.Extensions
 {
-	public enum LogChannel
+	public static class StopwatchExtensions
 	{
-		Log,
-		Warning,
-		Error
-	}
-
-	public enum PlayPosition
-	{
-		Beginning = 0,
-		End = 1
-	}
-
-	public enum PlayDirection
-	{
-		Forward = 1,
-		Backward = -1
-	}
-
-	namespace Extensions
-	{
-		public enum VesselCommand
+		public static void Restart(this System.Diagnostics.Stopwatch stopwatch)
 		{
-			None = 0,
-			Probe = 1,
-			Crew = 2
+			stopwatch.Reset();
+			stopwatch.Start();
 		}
 	}
 }

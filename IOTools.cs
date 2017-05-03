@@ -28,14 +28,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using ToadicusTools.Text;
 using UnityEngine;
 
 namespace ToadicusTools
 {
 	public static class IOTools
 	{
-		public static readonly string rootPath = KSPUtil.ApplicationRootPath;
-		public static readonly string gameDataPath = string.Format("{0}GameData/", rootPath);
+		public static readonly string KSPRootPath = KSPUtil.ApplicationRootPath.Replace("\\", "/");
+		public static readonly string GameDataPath = string.Format("{0}GameData/", KSPRootPath);
 
 		public static bool LoadTexture(
 			out Texture2D texture,
@@ -52,7 +53,7 @@ namespace ToadicusTools
 			if (isGameDataRelative)
 			{
 				url = path;
-				path = string.Format("{0}{1}", gameDataPath, path);
+				path = string.Format("{0}{1}", GameDataPath, path);
 			}
 
 			bool success = false;
@@ -68,39 +69,39 @@ namespace ToadicusTools
 			}
 			else
 			{
-				StringBuilder sb = Tools.GetStringBuilder();
-
-				sb.AppendFormat("ToadicusTools.IOTools.LoadTexture: specified file '{0}' did not exist.", path);
-
-				if (url == string.Empty)
+				using (PooledStringBuilder sb = PooledStringBuilder.Get())
 				{
-					url = path.Substring(gameDataPath.Length);
-				}
 
-				texture = null;
+					sb.AppendFormat("ToadicusTools.IOTools.LoadTexture: specified file '{0}' did not exist.", path);
 
-				try
-				{
-					string extension = Path.GetExtension(url);
-
-					if (extension != string.Empty)
+					if (url == string.Empty)
 					{
-						url = url.Substring(0, url.Length - extension.Length);
+						url = path.Substring(GameDataPath.Length);
 					}
 
-					sb.AppendFormat("  Attempting falling back to GameDatabase.GetTexture from URL '{0}'...", url);
+					texture = null;
 
-					texture = GameDatabase.Instance.GetTexture(url, false);
-				}
-				finally
-				{
-					success = !(texture == null);
+					try
+					{
+						string extension = Path.GetExtension(url);
 
-					sb.Append(success ? " success!" : " failed!");
+						if (extension != string.Empty)
+						{
+							url = url.Substring(0, url.Length - extension.Length);
+						}
 
-					Debug.LogWarning(sb.ToString());
+						sb.AppendFormat("  Attempting falling back to GameDatabase.GetTexture from URL '{0}'...", url);
 
-					Tools.PutStringBuilder(sb);
+						texture = GameDatabase.Instance.GetTexture(url, false);
+					}
+					finally
+					{
+						success = !(texture == null);
+
+						sb.Append(success ? " success!" : " failed!");
+
+						Debug.LogWarning(sb.ToString());
+					}
 				}
 			}
 

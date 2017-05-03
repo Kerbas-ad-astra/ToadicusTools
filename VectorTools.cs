@@ -22,7 +22,10 @@
 // SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 using System;
+using ToadicusTools.Text;
+using KSP;
 
 namespace ToadicusTools
 {
@@ -189,13 +192,9 @@ namespace ToadicusTools
 			return D;
 		}
 
-		public static string ToString(this Vector3d vector, string format)
+		public static string ToString(Vector3d vector, string format)
 		{
-			return string.Format("{0}, {1}, {2}",
-				vector.x.ToString(format, Tools.SIFormatter),
-				vector.y.ToString(format, Tools.SIFormatter),
-				vector.z.ToString(format, Tools.SIFormatter)
-			);
+			return Text.Extensions.ToString(vector, format);
 		}
 	}
 }

@@ -30,9 +30,9 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ToadicusTools
+namespace ToadicusTools.MuMechTools
 {
-	public static partial class Tools
+	public static class MuMechTools
 	{
 		/*
 		* MuMechLib Methods
@@ -48,7 +48,7 @@ namespace ToadicusTools
 
 			try
 			{
-				CoM = vessel.findWorldCenterOfMass();
+				CoM = vessel.CoM;
 			}
 			catch
 			{

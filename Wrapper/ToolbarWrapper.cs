@@ -31,7 +31,7 @@ using System.Text;
 using UnityEngine;
 
 
-namespace ToadicusTools {
+namespace ToadicusTools.Wrappers {
 
 
 

@@ -23,13 +23,14 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+using KSP.UI.Screens;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ToadicusTools
+namespace ToadicusTools.GUIUtils
 {
-	public static partial class Tools
+	public static class WindowTools
 	{
 		public static Rect ClampRectToScreen(Rect window, int topMargin, int rgtMargin, int botMargin, int lftMargin)
 		{
@@ -58,21 +59,22 @@ namespace ToadicusTools
 		{
 			float lftMargin = window.width;
 
+			// TODO: Find this stuff
 			switch (EditorLogic.fetch.editorScreen)
 			{
 				case EditorScreen.Actions:
-					lftMargin += EditorPanels.Instance.actionsPanelWidth;
+					// lftMargin += EditorPanels.Instance.panelManager;
 					break;
 				case EditorScreen.Crew:
-					lftMargin += EditorPanels.Instance.crewPanelWidth;
+					// lftMargin += EditorPanels.Instance.crewPanelWidth;
 					break;
 				case EditorScreen.Parts:
 				default:
-					lftMargin += EditorPanels.Instance.partsPanelWidth;
+					// lftMargin += EditorPanels.Instance.partsPanelWidth;
 					break;
 			}
 
-			return Tools.ClampRectToScreen(window, 30, 30, 30, (int)lftMargin);
+			return ClampRectToScreen(window, 30, 30, 30, (int)lftMargin);
 		}
 
 		public static Vector2 ClampV2ToScreen(Vector2 vec, uint xMargin, uint yMargin)
